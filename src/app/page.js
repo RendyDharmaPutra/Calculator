@@ -1,113 +1,292 @@
-import Image from 'next/image'
+'use client';
+
+import { Button } from '@material-tailwind/react';
+import { useState } from 'react';
+import CalcButton from './components/button';
+import InputButton from './components/button';
+import { Input } from 'postcss';
 
 export default function Home() {
+  const [display, setDisplay] = useState('0');
+  // let display = 'Tes';
+
+  // Elements
+  const elements = [
+    '%',
+    '/',
+    '7',
+    '8',
+    '9',
+    '*',
+    '4',
+    '5',
+    '6',
+    '-',
+    '1',
+    '2',
+    '3',
+    '+',
+    '.',
+    '0',
+    ',',
+  ];
+
+  // Computing Function
+
+  const push = (val) => {
+    let calc = display;
+    let length = calc.length;
+    const operator = ['%', '/', '*', '+', '-'];
+    if (
+      calc.startsWith('0') &&
+      !operator.includes(val) &&
+      !operator.includes(calc[1])
+    ) {
+      calc = '';
+      // setDisplay(calc.concat(val));
+    } else if (
+      operator.includes(calc[length - 1]) &&
+      operator.includes(val)
+      // && calc[length - 1] == val
+    ) {
+      // setDisplay(calc);
+      calc[length - 1] == val ? (val = '') : (calc = calc.slice(0, length - 1));
+      // val = '';
+    }
+
+    setDisplay(calc.concat(val));
+  };
+
+  const clear = () => {
+    setDisplay('0');
+  };
+
+  const del = () => {
+    let calc = display;
+    let end = calc.length;
+    // setCalc(display.replace(end, ''));
+    end == 1 ? setDisplay('0') : setDisplay(calc.slice(0, end - 1));
+
+    // setDisplay(calc.slice(0, end - 1));
+  };
+
+  const equal = () => {
+    let operation = display;
+    let res = eval(operation);
+    setDisplay(String(res));
+  };
+
+  // Styling
+
+  const style = {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: 'gray',
+    },
+
+    box: {
+      // margin: '2px',
+      paddingTop: '4px',
+      paddingBottom: '4px',
+      display: 'flex',
+      justifyContent: 'space-around',
+      width: '150px',
+      backgroundColor: '#0080ff',
+    },
+
+    btn: {
+      width: '30px',
+      height: '30px',
+    },
+
+    debug: {
+      backgroundColor: 'white',
+    },
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className='bg-gray-200 w-full max-w-[28.25rem] min-h-[38rem]'>
+      <div className='px-6 py-0 flex justify-end items-end  h-[7rem]'>
+        <h3 className='text-6xl'>{display}</h3>
+      </div>
+      <div className=' pt-5 px-2 text-gray-900 flex justify-between flex-wrap'>
+        <Button
+          className='w-[5.5rem] h-[5rem] text-xl text-center rounded-3xl mb-5'
+          size='lg'
+          onClick={() => clear()}
+        >
+          AC
+        </Button>
+        <Button
+          className='w-[5.5rem] h-[5rem] text-xl text-center rounded-3xl mb-5'
+          size='lg'
+          onClick={() => del()}
+        >
+          D
+        </Button>
+        {/* <InputButton
+            element={'%'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'/'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'7'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'8'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'9'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'*'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'6'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'5'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'4'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'-'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'3'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'2'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'1'}
+            display={display}
+            setDisplay={setDisplay}
+          />
+          <InputButton
+            element={'+'}
+            display={display}
+            setDisplay={setDisplay}
+          /> */}
+        {elements.map((element) => {
+          return (
+            <InputButton
+              element={element}
+              display={display}
+              setDisplay={setDisplay}
             />
-          </a>
-        </div>
+          );
+        })}
+        <Button
+          className='w-[5.5rem] h-[5rem] text-xl text-center rounded-3xl mb-5'
+          size='lg'
+          onClick={() => equal()}
+        >
+          =
+        </Button>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      {/* <div style={style.container}>
+      </div> */}
+      {/* <div style={style.box}>
+        <p style={style.debug}>{display}</p>
+      </div> */}
+      {/* <div style={style.box}>
+        <button style={style.btn} onClick={() => clear()}>
+          AC
+        </button>
+        <button style={style.btn} onClick={() => del()}>
+          D
+        </button>
+        <button style={style.btn} onClick={() => push('%')}>
+          %
+        </button>
+        <button style={style.btn} onClick={() => push('/')}>
+          /
+        </button>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div style={style.box}>
+        <button style={style.btn} onClick={() => push('7')}>
+          7
+        </button>
+        <button style={style.btn} onClick={() => push('8')}>
+          8
+        </button>
+        <button style={style.btn} onClick={() => push('9')}>
+          9
+        </button>
+        <button style={style.btn} onClick={() => push('*')}>
+          *
+        </button>
       </div>
-    </main>
-  )
+      <div style={style.box}>
+        <button style={style.btn} onClick={() => push('4')}>
+          4
+        </button>
+        <button style={style.btn} onClick={() => push('5')}>
+          5
+        </button>
+        <button style={style.btn} onClick={() => push('6')}>
+          6
+        </button>
+        <button style={style.btn} onClick={() => push('-')}>
+          -
+        </button>
+      </div>
+      <div style={style.box}>
+        <button style={style.btn} onClick={() => push('1')}>
+          1
+        </button>
+        <button style={style.btn} onClick={() => push('2')}>
+          2
+        </button>
+        <button style={style.btn} onClick={() => push('3')}>
+          3
+        </button>
+        <button style={style.btn} onClick={() => push('+')}>
+          +
+        </button>
+      </div>
+      <div style={style.box}>
+        <button style={style.btn} onClick={() => push('.')}>
+          .
+        </button>
+        <button style={style.btn} onClick={() => push('0')}>
+          0
+        </button>
+        <button style={style.btn} onClick={() => push(',')}>
+          ,
+        </button>
+        <button style={style.btn} onClick={() => equal()}>
+          =
+        </button>
+      </div> */}
+    </div>
+  );
 }
